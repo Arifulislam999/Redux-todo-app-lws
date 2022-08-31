@@ -3,7 +3,8 @@ import cancel from "../Image/cancel.png";
 import double from "../Image/double-tick.png";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState } from "react";
-import { Added, allCompleteTask, clearCompleted, Color, CompleteTask, Deleted, unCompleteTask } from "../Redux/Action";
+import { Added, allCompleteTask, clearCompleted, Color, CompleteTask, Deleted, unCompleteTask, Update } from "../Redux/Action";
+import "./style.css";
 import Foter from "./Foter";
 
 function TodoList() {
@@ -33,6 +34,14 @@ function TodoList() {
     // console.log(data);
     const dispatch = useDispatch();
     const [search, setSerch] = useState("");
+    const [display, setDisplay] = useState(false);
+    const [updateValue, setUpadatValue] = useState("");
+    const [idNo, setId] = useState();
+
+    const handlerUpdate = (e) => {
+        setUpadatValue(e.target.value);
+    };
+    // console.log(updateValue);
     const handleSearch = (e) => {
         e.preventDefault();
         setSerch(e.target.value);
@@ -64,6 +73,20 @@ function TodoList() {
     };
     const handlerColor = (id, color) => {
         dispatch(Color(id, color));
+    };
+    const popUp = (id, text) => {
+        setDisplay(true);
+        setId(id);
+
+        // console.log(id);
+    };
+    const update = (e) => {
+        e.preventDefault();
+        setDisplay(false);
+        dispatch(Update(idNo, updateValue));
+    };
+    const handleBlur = () => {
+        setDisplay(false);
     };
     // console.log(data);
     return (
@@ -145,26 +168,35 @@ function TodoList() {
                                                 onClick={() => handlerColor(value.id, "green")}
                                             ></div>
 
-                                            <div
-                                                className={`flex-shrink-0 h-4 w-4 rounded-full border-2 ml-auto cursor-pointer border-yellow-500 hover:bg-yellow-500 ${
-                                                    value.color === "yellow" && "bg-yellow-500"
-                                                }`}
-                                                onClick={() => handlerColor(value.id, "yellow")}
-                                            ></div>
+                                            <div>
+                                                <div
+                                                    className={`flex-shrink-0 h-4 w-4 rounded-full border-2 ml-auto cursor-pointer border-yellow-500 hover:bg-yellow-500 ${
+                                                        value.color === "yellow" && "bg-yellow-500"
+                                                    }`}
+                                                    onClick={() => handlerColor(value.id, "yellow")}
+                                                ></div>
+                                            </div>
 
-                                            <div
-                                                className={`lex-shrink-0 h-4 w-4 rounded-full border-2 ml-auto cursor-pointer border-red-500 hover:bg-red-500 ${
-                                                    value.color === "red" && "bg-red-500"
-                                                }`}
-                                                onClick={() => handlerColor(value.id, "red")}
-                                            ></div>
+                                            <div>
+                                                <div
+                                                    className={`lex-shrink-0 h-4 w-4 rounded-full border-2 ml-auto cursor-pointer border-red-500 hover:bg-red-500 ${
+                                                        value.color === "red" && "bg-red-500"
+                                                    }`}
+                                                    onClick={() => handlerColor(value.id, "red")}
+                                                ></div>
+                                            </div>
+                                            <div onClick={() => popUp(value.id, value.text)}>
+                                                <i className="fa-solid fa-pencil cursor-pointer"></i>
+                                            </div>
 
-                                            <img
-                                                src={cancel}
-                                                className="flex-shrink-0 w-4 h-4 ml-2 cursor-pointer"
-                                                alt="Cancel"
-                                                onClick={() => handlerDelete(value.id)}
-                                            />
+                                            <div>
+                                                <img
+                                                    src={cancel}
+                                                    className="flex-shrink-0 w-4 h-4 ml-2 cursor-pointer"
+                                                    alt="Cancel"
+                                                    onClick={() => handlerDelete(value.id)}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 );
@@ -174,6 +206,19 @@ function TodoList() {
                     <hr className="mt-4" />
                     <Foter />
                 </div>
+            </div>
+            <div className={`popup ${!display && "invisible"}`}>
+                <form action="#">
+                    <div className="input">
+                        <input type="text" id="name" name="name" onChange={handlerUpdate} />
+                    </div>
+                    <button onClick={update} className="btn" type="submit">
+                        Update
+                    </button>
+                    <button onClick={handleBlur} className="btn2" type="submit">
+                        Cancel
+                    </button>
+                </form>
             </div>
         </div>
     );

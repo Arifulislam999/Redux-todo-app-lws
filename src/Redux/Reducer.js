@@ -1,5 +1,5 @@
 import { initialState } from "../Components/initialState";
-import { ADDED, ALLCOMPLETETASK, CLEARCOMPLETED, COLOR, COMPLETETASK, DELETED, UNCOMPLETETASK } from "./ActionType";
+import { ADDED, ALLCOMPLETETASK, CLEARCOMPLETED, COLOR, COMPLETETASK, DELETED, UNCOMPLETETASK, UPDATE } from "./ActionType";
 const findId = (data) => {
     const maxId = data.reduce((maxId, todo) => Math.max(todo.id, maxId), -1);
     return maxId + 1;
@@ -67,7 +67,16 @@ export const reducer = (state = initialState, action) => {
             });
         case CLEARCOMPLETED:
             return state.filter((data) => data.completed === false);
-
+        case UPDATE:
+            const { id, value } = action.payload;
+            // console.log(value);
+            return state.map((data) => {
+                if (data.id === id) {
+                    return { ...data, text: value };
+                } else {
+                    return data;
+                }
+            });
         default:
             return state;
     }

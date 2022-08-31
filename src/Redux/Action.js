@@ -1,4 +1,4 @@
-import { ADDED, ALLCOMPLETETASK, CLEARCOMPLETED, COLOR, COMPLETETASK, DELETED, UNCOMPLETETASK } from "./ActionType";
+import { ADDED, ALLCOMPLETETASK, CLEARCOMPLETED, COLOR, COMPLETETASK, DELETED, UNCOMPLETETASK, UPDATE } from "./ActionType";
 
 export const Added = (text) => {
     return {
@@ -40,6 +40,16 @@ export const Color = (todoId, color) => {
         payload: {
             todoId,
             color,
+        },
+    };
+};
+
+export const Update = (id, value) => {
+    return {
+        type: UPDATE,
+        payload: {
+            id,
+            value,
         },
     };
 };

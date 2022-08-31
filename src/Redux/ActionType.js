@@ -12,3 +12,4 @@ export const INCOMPLETED = "incompleted";
 export const COMPLETED = "completed";
 export const ALL = "all";
 export const COLOR = "color";
+export const UPDATE = "update";
